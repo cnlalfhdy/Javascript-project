@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>웹 계산기</title>
+    <style>
+        body { font-family: Arial; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f0f0; }
+        #calculator { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        #display { width: 220px; height: 50px; font-size: 24px; margin-bottom: 10px; text-align: right; padding-right: 10px; }
+        button { width: 50px; height: 50px; font-size: 20px; margin: 2px; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #ddd; }
+        .operator { background: #f5923e; color: white; }
+        .operator:hover { background: #e67e22; }
+        .clear { background: #f44336; color: white; width: 210px; }
+        .clear:hover { background: #d32f2f; }
+    </style>
+</head>
+<body>
+
+<div id="calculator">
+    <input type="text" id="display" disabled placeholder="0">
+
+    <div>
+        <button onclick="press('7')">7</button>
+        <button onclick="press('8')">8</button>
+        <button onclick="press('9')">9</button>
+        <button class="operator" onclick="press('/')">/</button>
+    </div>
+    <div>
+        <button onclick="press('4')">4</button>
+        <button onclick="press('5')">5</button>
+        <button onclick="press('6')">6</button>
+        <button class="operator" onclick="press('*')">*</button>
+    </div>
+    <div>
+        <button onclick="press('1')">1</button>
+        <button onclick="press('2')">2</button>
+        <button onclick="press('3')">3</button>
+        <button class="operator" onclick="press('-')">-</button>
+    </div>
+    <div>
+        <button onclick="press('0')">0</button>
+        <button onclick="press('.')">.</button>
+        <button class="operator" onclick="calculate()">=</button>
+        <button class="operator" onclick="press('+')">+</button>
+    </div>
+    <div>
+        <button class="clear" onclick="clearDisplay()">C</button>
+    </div>
+</div>
+
+<script>
+let expression = "";
+
+function press(value) {
+    expression += value;
+    document.getElementById("display").value = expression;
+}
+
+function calculate() {
+    try {
+        let result = eval(expression);
+        document.getElementById("display").value = result;
+        expression = result.toString();
+    } catch {
+        document.getElementById("display").value = "Error";
+        expression = "";
+    }
+}
+
+function clearDisplay() {
+    expression = "";
+    document.getElementById("display").value = "";
+}
+
+// 키보드 입력 처리
+document.addEventListener('keydown', function(event) {
+    const key = event.key;
+    if (('0123456789.+-*/').includes(key)) {
+        press(key);
+    } else if (key === 'Enter') {
+        calculate();
+    } else if (key === 'Backspace') {
+        expression = expression.slice(0, -1);
+        document.getElementById("display").value = expression;
+    } else if (key.toLowerCase() === 'c') {
+        clearDisplay();
+    }
+});
+</script>
+
+</body>
+</html>
